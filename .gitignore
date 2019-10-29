@@ -1,0 +1,19 @@
+# eclipse
+.classpath/
+.metadata/
+.project/
+.settings/
+*.launch
+bin/
+eclipse/
+
+# idea
+.idea/
+*.ipr
+*.iws
+out/
+
+# gradle
+.gradle/
+build/
+run/

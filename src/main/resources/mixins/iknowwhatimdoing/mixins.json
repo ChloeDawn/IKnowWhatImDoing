@@ -1,0 +1,18 @@
+{
+  "target": "@environment(DEFAULT)",
+  "minVersion": "0.7.11",
+  "compatibilityLevel": "JAVA_8",
+  "required": true,
+  "package": "io.github.chloedawn.ikwid.mixin",
+  "refmap": "mixins/iknowwhatimdoing/refmap.json",
+  "client": [
+    "OptionsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true,
+    "requireAnnotations": true
+  }
+}

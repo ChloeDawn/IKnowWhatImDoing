@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "iknowwhatimdoing",
+  "name": "I Know What I'm Doing",
+  "version": "$version",
+  "description": "Suppresses tutorial cards in fresh game instances",
+  "environment": "client",
+  "license": "Apache-2.0",
+  "depends": {
+    "fabricloader": ">=0.6.3"
+  },
+  "mixins": [
+    "mixins/iknowwhatimdoing/mixins.json"
+  ],
+  "authors": [
+    {
+      "name": "Chloe Dawn",
+      "contact": {
+        "homepage": "https://git.io/Jen3g"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://git.io/JeuS1",
+    "sources": "https://git.io/JeuS1",
+    "issues": "https://git.io/JeuSM"
+  }
+}
