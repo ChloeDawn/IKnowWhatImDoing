@@ -1,3 +1,5 @@
+import java.time.Instant
+
 plugins {
   id("fabric-loom") version "0.4.33"
   id("signing")
@@ -27,6 +29,19 @@ tasks.withType<ProcessResources> {
   filesMatching("/fabric.mod.json") {
     expand("version" to version)
   }
+}
+
+tasks.withType<Jar> {
+  archiveClassifier.set("fabric")
+  manifest.attributes(mapOf(
+    "Specification-Title" to project.name,
+    "Specification-Vendor" to project.group,
+    "Specification-Version" to "24.0",
+    "Implementation-Title" to project.name,
+    "Implementation-Version" to 1,
+    "Implementation-Vendor" to project.group,
+    "Implementation-Timestamp" to Instant.now().toString()
+  ))
 }
 
 tasks.withType<JavaCompile> {
