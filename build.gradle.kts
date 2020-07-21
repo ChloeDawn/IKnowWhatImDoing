@@ -32,7 +32,9 @@ tasks.withType<ProcessResources> {
 }
 
 tasks.withType<Jar> {
-  archiveClassifier.set("fabric")
+  afterEvaluate {
+    archiveClassifier.set("fabric")
+  }
   manifest.attributes(mapOf(
     "Specification-Title" to project.name,
     "Specification-Vendor" to project.group,
