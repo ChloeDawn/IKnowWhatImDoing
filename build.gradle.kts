@@ -31,12 +31,12 @@ dependencies {
 tasks.withType<Jar> {
   archiveClassifier.set("forge")
   manifest.attributes(mapOf(
-    "Specification-Title" to name,
-    "Specification-Vendor" to group,
+    "Specification-Title" to project.name,
+    "Specification-Vendor" to project.group,
     "Specification-Version" to "24.0",
-    "Implementation-Title" to name,
+    "Implementation-Title" to project.name,
     "Implementation-Version" to 1,
-    "Implementation-Vendor" to group,
+    "Implementation-Vendor" to project.group,
     "Implementation-Timestamp" to Instant.now().toString()
   ))
   finalizedBy("reobfJar")
