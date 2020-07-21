@@ -1,8 +1,0 @@
-{
-  "minVersion": "0.8",
-  "compatibilityLevel": "JAVA_8",
-  "required": true,
-  "package": "dev.sapphic.iknowwhatimdoing",
-  "client": [ "IKnowWhatImDoing" ],
-  "refmap": "mixins/iknowwhatimdoing/refmap.json"
-}

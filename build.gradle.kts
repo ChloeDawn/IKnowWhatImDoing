@@ -1,5 +1,8 @@
+import java.time.Instant
+import org.gradle.jvm.tasks.Jar
+
 plugins {
-  id("fabric-loom") version "0.4.33"
+  id("net.minecraftforge.gradle") version "3.0.181"
   id("signing")
 }
 
@@ -12,21 +15,31 @@ java {
 }
 
 minecraft {
-  runDir = "run"
+  mappings("snapshot", "20200721-1.15.1")
+  runs {
+    with(create("client")) {
+      workingDirectory = file("run").canonicalPath
+      mods.create("iknowwhatimdoing").source(sourceSets["main"])
+    }
+  }
 }
 
 dependencies {
-  minecraft("com.mojang:minecraft:1.16.1")
-  mappings("net.fabricmc:yarn:1.16.1+build.21:v2")
-  modImplementation("net.fabricmc:fabric-loader:0.9.0+build.204")
-  implementation("org.jetbrains:annotations:19.0.0")
-  implementation("org.checkerframework:checker-qual:3.4.0")
+  minecraft("net.minecraftforge:forge:1.15.2-31.2.31")
 }
 
-tasks.withType<ProcessResources> {
-  filesMatching("/fabric.mod.json") {
-    expand("version" to version)
-  }
+tasks.withType<Jar> {
+  archiveClassifier.set("forge")
+  manifest.attributes(mapOf(
+    "Specification-Title" to name,
+    "Specification-Vendor" to group,
+    "Specification-Version" to "24.0",
+    "Implementation-Title" to name,
+    "Implementation-Version" to 1,
+    "Implementation-Vendor" to group,
+    "Implementation-Timestamp" to Instant.now().toString()
+  ))
+  finalizedBy("reobfJar")
 }
 
 tasks.withType<JavaCompile> {

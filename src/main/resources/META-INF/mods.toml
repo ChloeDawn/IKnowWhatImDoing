@@ -1,0 +1,18 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+[[mods]]
+  modId="iknowwhatimdoing"
+  version="${file.jarVersion}"
+  displayName="I Know What I'm Doing"
+  authors="Chloe Dawn"
+  description='''Suppresses tutorial cards in fresh game instances'''
+[[dependencies.iknowwhatimdoing]]
+  modId="minecraft"
+  mandatory=true
+  versionRange="[1.14,1.16)"
+  side="CLIENT"
+[[dependencies.iknowwhatimdoing]]
+  modId="forge"
+  mandatory=true
+  versionRange="[28,)"
+  side="CLIENT"
