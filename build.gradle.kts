@@ -33,9 +33,9 @@ tasks.withType<Jar> {
   manifest.attributes(mapOf(
     "Specification-Title" to project.name,
     "Specification-Vendor" to project.group,
-    "Specification-Version" to "24.0",
+    "Specification-Version" to 1,
     "Implementation-Title" to project.name,
-    "Implementation-Version" to 1,
+    "Implementation-Version" to project.version,
     "Implementation-Vendor" to project.group,
     "Implementation-Timestamp" to Instant.now().toString()
   ))
