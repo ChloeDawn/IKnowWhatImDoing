@@ -1,5 +1,6 @@
 modLoader="javafml"
 loaderVersion="[28,)"
+license="Apache-2.0"
 [[mods]]
   modId="iknowwhatimdoing"
   version="${file.jarVersion}"
