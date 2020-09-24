@@ -32,7 +32,7 @@ signing {
 }
 
 tasks {
-  named<JavaCompile>("compileJava") {
+  compileJava {
     with(options) {
       isFork = true
       isDeprecation = true
@@ -43,13 +43,13 @@ tasks {
     }
   }
 
-  named<ProcessResources>("processResources") {
+  processResources {
     filesMatching("/fabric.mod.json") {
       expand("version" to version)
     }
   }
 
-  named<Jar>("jar") {
+  jar {
     from("/LICENSE")
     afterEvaluate {
       archiveClassifier.set("fabric")
