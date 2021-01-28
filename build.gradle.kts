@@ -1,67 +1,96 @@
+import org.gradle.util.GradleVersion
 import java.time.Instant
 
 plugins {
-  id("fabric-loom") version "0.4.33"
+  id("fabric-loom") version "0.6.25"
+  id("net.nemerosa.versioning") version "2.8.2"
   id("signing")
 }
 
 group = "dev.sapphic"
-version = "3.0.1"
-
-dependencies {
-  minecraft("com.mojang:minecraft:1.16.1")
-  mappings("net.fabricmc:yarn:1.16.1+build.21:v2")
-  modImplementation("net.fabricmc:fabric-loader:0.9.0+build.204")
-  implementation("org.jetbrains:annotations:20.1.0")
-  implementation("org.checkerframework:checker-qual:3.6.1")
-}
-
-minecraft {
-  refmapName = "mixins/iknowwhatimdoing/refmap.json"
-  runDir = "run"
-}
+version = "3.1.0"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = sourceCompatibility
+  withSourcesJar()
 }
 
-signing {
-  useGpgCmd()
-  sign(configurations.archives.get())
+dependencies {
+  minecraft("com.mojang:minecraft:1.16.5")
+  mappings(minecraft.officialMojangMappings())
+  modImplementation("net.fabricmc:fabric-loader:0.11.1")
+  implementation("org.jetbrains:annotations:20.1.0")
+  implementation("org.checkerframework:checker-qual:3.9.0")
+  modRuntime("io.github.prospector:modmenu:1.14.13+build.22")
 }
 
 tasks {
   compileJava {
     with(options) {
+      options.release.set(8)
       isFork = true
       isDeprecation = true
       encoding = "UTF-8"
-      compilerArgs.addAll(listOf(
-        "-Xlint:all", "-parameters"
-      ))
+      compilerArgs.addAll(listOf("-Xlint:all", "-parameters"))
     }
   }
 
   processResources {
     filesMatching("/fabric.mod.json") {
-      expand("version" to version)
+      expand("version" to project.version)
     }
   }
 
   jar {
     from("/LICENSE")
-    afterEvaluate {
-      archiveClassifier.set("fabric")
-    }
-    manifest.attributes(mapOf(
-      "Specification-Title" to project.name,
-      "Specification-Vendor" to project.group,
-      "Specification-Version" to 1,
+
+    manifest.attributes(
+      "Build-Timestamp" to Instant.now(),
+      "Build-Revision" to versioning.info.commit,
+      "Build-Jvm" to "${
+        System.getProperty("java.version")
+      } (${
+        System.getProperty("java.vendor")
+      } ${
+        System.getProperty("java.vm.version")
+      })",
+      "Built-By" to GradleVersion.current(),
+
       "Implementation-Title" to project.name,
       "Implementation-Version" to project.version,
       "Implementation-Vendor" to project.group,
-      "Implementation-Timestamp" to "${Instant.now()}"
-    ))
+
+      "Specification-Title" to "FabricMod",
+      "Specification-Version" to "1.0.0",
+      "Specification-Vendor" to project.group,
+
+      "Sealed" to "true"
+    )
+  }
+
+  assemble {
+    dependsOn(versionFile)
+  }
+}
+
+if (hasProperty("signing.mods.keyalias")) {
+  val alias = property("signing.mods.keyalias")
+  val keystore = property("signing.mods.keystore")
+  val password = property("signing.mods.password")
+
+  listOf(tasks.remapJar, tasks.remapSourcesJar).forEach {
+    it.get().doLast {
+      val file = outputs.files.singleFile
+      ant.invokeMethod(
+        "signjar", mapOf(
+          "jar" to file,
+          "alias" to alias,
+          "storepass" to password,
+          "keystore" to keystore,
+          "verbose" to true,
+          "preservelastmodified" to true
+        )
+      )
+      signing.sign(file)
+    }
   }
 }
