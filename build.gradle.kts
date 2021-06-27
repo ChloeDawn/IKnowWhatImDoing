@@ -1,9 +1,8 @@
-import org.gradle.util.GradleVersion
 import java.time.Instant
 
 plugins {
-  id("fabric-loom") version "0.6.25"
-  id("net.nemerosa.versioning") version "2.8.2"
+  id("fabric-loom") version "0.8.18"
+  id("net.nemerosa.versioning") version "be24b23"
   id("signing")
 }
 
@@ -14,19 +13,27 @@ java {
   withSourcesJar()
 }
 
+repositories {
+  maven("https://maven.terraformersmc.com/releases") {
+    content {
+      includeGroup("com.terraformersmc")
+    }
+  }
+}
+
 dependencies {
   minecraft("com.mojang:minecraft:1.16.5")
-  mappings(minecraft.officialMojangMappings())
-  modImplementation("net.fabricmc:fabric-loader:0.11.1")
-  implementation("org.jetbrains:annotations:20.1.0")
-  implementation("org.checkerframework:checker-qual:3.9.0")
-  modRuntime("io.github.prospector:modmenu:1.14.13+build.22")
+  mappings(loom.officialMojangMappings())
+  modImplementation("net.fabricmc:fabric-loader:0.11.6")
+  implementation("org.jetbrains:annotations:21.0.1")
+  implementation("org.checkerframework:checker-qual:3.14.0")
+  modRuntime("com.terraformersmc:modmenu:1.16.5")
 }
 
 tasks {
   compileJava {
     with(options) {
-      options.release.set(8)
+      release.set(8)
       isFork = true
       isDeprecation = true
       encoding = "UTF-8"
@@ -79,16 +86,20 @@ if (hasProperty("signing.mods.keyalias")) {
 
   listOf(tasks.remapJar, tasks.remapSourcesJar).forEach {
     it.get().doLast {
+      if (!project.file(keystore!!).exists()) {
+        error("Missing keystore $keystore")
+      }
+
       val file = outputs.files.singleFile
       ant.invokeMethod(
         "signjar", mapOf(
-          "jar" to file,
-          "alias" to alias,
-          "storepass" to password,
-          "keystore" to keystore,
-          "verbose" to true,
-          "preservelastmodified" to true
-        )
+        "jar" to file,
+        "alias" to alias,
+        "storepass" to password,
+        "keystore" to keystore,
+        "verbose" to true,
+        "preservelastmodified" to true
+      )
       )
       signing.sign(file)
     }
