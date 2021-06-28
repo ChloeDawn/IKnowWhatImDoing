@@ -6,6 +6,7 @@ import net.minecraft.client.tutorial.TutorialSteps;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -25,7 +26,7 @@ public final class IKnowWhatImDoing {
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
       @Override
       public void run() {
-        MinecraftForge.EVENT_BUS.addListener(new Consumer<GuiOpenEvent>() {
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, true, new Consumer<GuiOpenEvent>() {
           @Override
           public void accept(final GuiOpenEvent event) {
             if (event.getGui() instanceof MainMenuScreen) {
