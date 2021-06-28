@@ -1,5 +1,6 @@
 package dev.sapphic.iknowwhatimdoing;
 
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.tutorial.TutorialSteps;
@@ -10,14 +11,26 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.ModWorkManager;
+import net.minecraftforge.fml.client.ClientModLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 @Mod("iknowwhatimdoing")
 public final class IKnowWhatImDoing {
+  /**
+   * Tutorial step clearing is performed during the screen opening event as Forge disallows modification
+   * of the options.txt file during startup, and the load completion event is posted before the options
+   * are loaded from file by the mod loader. As such, we need to ensure that the tutorial step is set
+   * after loading.
+   *
+   * @see GameSettings#save()
+   * @see ClientModLoader#finishModLoading(ModWorkManager.DrivenExecutor, Executor)
+   */
   @SuppressWarnings("serial")
   public IKnowWhatImDoing() {
     ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> {
