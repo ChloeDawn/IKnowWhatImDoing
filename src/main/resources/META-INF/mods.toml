@@ -7,7 +7,7 @@ modId = "iknowwhatimdoing"
 version = "${file.jarVersion}"
 displayName = "I Know What I'm Doing"
 authors = "Chloe Dawn"
-description = '''Suppresses tutorial cards in new game instances'''
+description = '''Suppresses tutorial cards'''
 
 [[dependencies.iknowwhatimdoing]]
 modId = "minecraft"
