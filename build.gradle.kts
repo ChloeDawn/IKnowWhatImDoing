@@ -3,20 +3,20 @@ import org.gradle.util.GradleVersion
 import java.time.Instant
 
 plugins {
-  id("net.minecraftforge.gradle") version "4.0.9"
-  id("net.nemerosa.versioning") version "2.8.2"
+  id("net.minecraftforge.gradle") version "4.1.12"
+  id("net.nemerosa.versioning") version "2.14.0"
   id("signing")
 }
 
 group = "dev.sapphic"
-version = "1.0.0"
+version = "3.2.0"
 
 java {
   withSourcesJar()
 }
 
 minecraft {
-  mappings("snapshot", "20201028-1.16.3")
+  mappings("official", "1.16.5")
   runs {
     create("client") {
       workingDirectory = file("run").canonicalPath
@@ -32,8 +32,8 @@ minecraft {
 }
 
 dependencies {
-  minecraft("net.minecraftforge:forge:1.16.5-36.0.7")
-  implementation("org.checkerframework:checker-qual:3.9.0")
+  minecraft("net.minecraftforge:forge:1.16.5-36.1.32")
+  implementation("org.checkerframework:checker-qual:3.14.0")
 }
 
 tasks {
@@ -95,7 +95,7 @@ tasks {
     }
 
     val signSourcesJar by creating(SignJar::class) {
-      val sourcesJar by getting(Jar::class) // No type-safe accessor
+      val sourcesJar by getting(Jar::class)
 
       dependsOn(sourcesJar)
 

@@ -17,7 +17,7 @@ public final class IKnowWhatImDoing {
     ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> {
       return Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (s, v) -> true);
     });
-    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
+    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
       @Override
       public void run() {
         Minecraft.getInstance().execute(() -> {

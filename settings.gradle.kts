@@ -1,5 +1,3 @@
-rootProject.name = "IKnowWhatImDoing"
-
 pluginManagement {
   repositories {
     gradlePluginPortal()
@@ -13,3 +11,5 @@ pluginManagement {
     }
   }
 }
+
+rootProject.name = "IKnowWhatImDoing"

@@ -7,12 +7,12 @@ modId = "iknowwhatimdoing"
 version = "${file.jarVersion}"
 displayName = "I Know What I'm Doing"
 authors = "Chloe Dawn"
-description = '''Suppresses tutorial cards in fresh game instances'''
+description = '''Suppresses tutorial cards in new game instances'''
 
 [[dependencies.iknowwhatimdoing]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.14,1.17)"
+versionRange = "[1.16,1.17)"
 side = "CLIENT"
 
 [[dependencies.iknowwhatimdoing]]
