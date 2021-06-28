@@ -7,6 +7,8 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -20,8 +22,8 @@ public final class IKnowWhatImDoing {
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
       @Override
       public void run() {
-        Minecraft.getInstance().execute(() -> {
-          Minecraft.getInstance().getTutorial().setStep(TutorialSteps.NONE);
+        FMLJavaModLoadingContext.get().getModEventBus().<FMLLoadCompleteEvent>addListener(e -> {
+          e.enqueueWork(() -> Minecraft.getInstance().getTutorial().setStep(TutorialSteps.NONE));
         });
       }
     });
