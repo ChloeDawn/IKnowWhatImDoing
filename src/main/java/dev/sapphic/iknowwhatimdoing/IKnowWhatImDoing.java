@@ -23,10 +23,9 @@ import java.util.function.Consumer;
 @Mod("iknowwhatimdoing")
 public final class IKnowWhatImDoing {
   /**
-   * Tutorial step clearing is performed during the screen opening event as Forge disallows modification
-   * of the options.txt file during startup, and the load completion event is posted before the options
-   * are loaded from file by the mod loader. As such, we need to ensure that the tutorial step is set
-   * after loading.
+   * Tutorial clearing is performed during the screen opening event as Forge disallows modification of the
+   * options.txt file during startup, and the load completion event is posted before the options are loaded
+   * from file by the mod loader. As such, we need to ensure that the tutorial step is set after loading.
    *
    * @see GameSettings#save()
    * @see ClientModLoader#finishModLoading(ModWorkManager.DrivenExecutor, Executor)
