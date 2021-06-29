@@ -16,11 +16,14 @@ import net.minecraftforge.fml.client.ClientModLoader;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.Serializable;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 @Mod("iknowwhatimdoing")
-public final class IKnowWhatImDoing {
+public final class IKnowWhatImDoing implements Serializable {
+  private static final long serialVersionUID = -8646731113218545455L;
+
   /**
    * Tutorial clearing is performed during the screen opening event as Forge disallows modification of the
    * options.txt file during startup, and the load completion event is posted before the options are loaded
@@ -29,10 +32,11 @@ public final class IKnowWhatImDoing {
    * @see GameSettings#save()
    * @see ClientModLoader#finishModLoading(ModWorkManager.DrivenExecutor, Executor)
    */
-  @SuppressWarnings("serial")
   public IKnowWhatImDoing() {
     ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> "", (s, v) -> v));
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
+      private static final long serialVersionUID = 2962366856317629997L;
+
       @Override
       public void run() {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, true, new Consumer<GuiOpenEvent>() {
