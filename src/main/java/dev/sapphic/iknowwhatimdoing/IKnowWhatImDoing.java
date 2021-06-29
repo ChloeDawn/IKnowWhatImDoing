@@ -14,6 +14,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.ModWorkManager;
 import net.minecraftforge.fml.client.ClientModLoader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.Serializable;
@@ -33,7 +34,9 @@ public final class IKnowWhatImDoing implements Serializable {
    * @see ClientModLoader#finishModLoading(ModWorkManager.DrivenExecutor, Executor)
    */
   public IKnowWhatImDoing() {
-    ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> "", (s, v) -> v));
+    ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> {
+      return Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (s, v) -> true);
+    });
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
       private static final long serialVersionUID = 2962366856317629997L;
 
