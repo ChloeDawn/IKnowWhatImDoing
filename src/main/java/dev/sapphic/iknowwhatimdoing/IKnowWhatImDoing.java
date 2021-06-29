@@ -14,7 +14,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.ModWorkManager;
 import net.minecraftforge.fml.client.ClientModLoader;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.concurrent.Executor;
@@ -32,9 +31,7 @@ public final class IKnowWhatImDoing {
    */
   @SuppressWarnings("serial")
   public IKnowWhatImDoing() {
-    ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> {
-      return Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (s, v) -> true);
-    });
+    ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> "", (s, v) -> v));
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
       @Override
       public void run() {
