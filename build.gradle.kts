@@ -1,45 +1,41 @@
-import net.minecraftforge.gradle.common.task.SignJar
-import org.gradle.util.GradleVersion
 import java.time.Instant
+import net.minecraftforge.gradle.common.tasks.SignJar
 
 plugins {
-  id("net.minecraftforge.gradle") version "4.1.12"
-  id("net.nemerosa.versioning") version "2.14.0"
+  id("net.minecraftforge.gradle") version "5.1.23"
+  id("net.nemerosa.versioning") version "2.15.0"
   id("signing")
 }
 
 group = "dev.sapphic"
-version = "3.2.0"
+version = "4.0.0"
 
 java {
   withSourcesJar()
 }
 
 minecraft {
-  mappings("official", "1.16.5")
+  mappings("official", "1.17.1")
   runs {
-    create("client") {
-      workingDirectory = file("run").canonicalPath
-      mods.create("iknowwhatimdoing").source(sourceSets["main"])
-      property("forge.logging.console.level", "debug")
-    }
-    create("server") {
-      workingDirectory = file("run").canonicalPath
-      mods.create("iknowwhatimdoing").source(sourceSets["main"])
-      property("forge.logging.console.level", "debug")
+    listOf("client", "server").forEach {
+      create(it) {
+        mods.create("iknowwhatimdoing").source(sourceSets["main"])
+        property("forge.logging.console.level", "debug")
+        property("forge.logging.markers", "SCAN")
+      }
     }
   }
 }
 
 dependencies {
-  minecraft("net.minecraftforge:forge:1.16.5-36.1.32")
-  implementation("org.checkerframework:checker-qual:3.14.0")
+  minecraft("net.minecraftforge:forge:1.17.1-37.0.103")
+  implementation("org.checkerframework:checker-qual:3.18.1")
 }
 
 tasks {
   compileJava {
     with(options) {
-      release.set(8)
+      release.set(16)
       isFork = true
       isDeprecation = true
       encoding = "UTF-8"
@@ -48,6 +44,8 @@ tasks {
   }
 
   jar {
+    archiveClassifier.set("forge")
+
     from("/LICENSE")
 
     manifest.attributes(
@@ -76,40 +74,42 @@ tasks {
     finalizedBy(reobf)
   }
 
+  val sourcesJar by getting(Jar::class) {
+    archiveClassifier.set("forge-${archiveClassifier.get()}")
+  }
+
   if (project.hasProperty("signing.mods.keyalias")) {
-    val keyalias = project.property("signing.mods.keyalias")
-    val keystore = project.property("signing.mods.keystore")
-    val password = project.property("signing.mods.password")
+    val keyalias = project.property("signing.mods.keyalias") as String
+    val keystore = project.property("signing.mods.keystore") as String
+    val password = project.property("signing.mods.password") as String
 
     val signJar by creating(SignJar::class) {
       dependsOn(reobf)
 
-      setAlias(keyalias)
-      setKeyStore(keystore)
-      setKeyPass(password)
-      setStorePass(password)
-      setInputFile(jar.get().archiveFile)
-      setOutputFile(inputFile)
+      alias.set(keyalias)
+      keyStore.set(keystore)
+      keyPass.set(password)
+      storePass.set(password)
+      inputFile.set(jar.get().archiveFile)
+      outputFile.set(inputFile)
 
       doLast {
-        signing.sign(inputFile)
+        signing.sign(outputFile.get().asFile)
       }
     }
 
     val signSourcesJar by creating(SignJar::class) {
-      val sourcesJar by getting(Jar::class)
-
       dependsOn(sourcesJar)
 
-      setAlias(keyalias)
-      setKeyStore(keystore)
-      setKeyPass(password)
-      setStorePass(password)
-      setInputFile(sourcesJar.archiveFile)
-      setOutputFile(inputFile)
+      alias.set(keyalias)
+      keyStore.set(keystore)
+      keyPass.set(password)
+      storePass.set(password)
+      inputFile.set(sourcesJar.archiveFile)
+      outputFile.set(inputFile)
 
       doLast {
-        signing.sign(inputFile)
+        signing.sign(outputFile.get().asFile)
       }
     }
 

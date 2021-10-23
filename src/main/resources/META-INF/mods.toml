@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[28,)"
+loaderVersion = "[37,)"
 license = "Apache-2.0"
 
 [[mods]]
@@ -7,16 +7,16 @@ modId = "iknowwhatimdoing"
 version = "${file.jarVersion}"
 displayName = "I Know What I'm Doing"
 authors = "Chloe Dawn"
-description = '''Suppresses in-game tutorial hints'''
+description = "Suppresses in-game tutorial hints"
 
 [[dependencies.iknowwhatimdoing]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16,1.17)"
+versionRange = "[1.17,1.18)"
 side = "CLIENT"
 
 [[dependencies.iknowwhatimdoing]]
 modId = "forge"
 mandatory = true
-versionRange = "[28,)"
+versionRange = "[37,)"
 side = "CLIENT"

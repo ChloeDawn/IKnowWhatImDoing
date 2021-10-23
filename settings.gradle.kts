@@ -3,6 +3,7 @@ pluginManagement {
     gradlePluginPortal()
     maven("https://files.minecraftforge.net/maven")
   }
+
   resolutionStrategy {
     eachPlugin {
       if ("net.minecraftforge.gradle" == requested.id.id) {
