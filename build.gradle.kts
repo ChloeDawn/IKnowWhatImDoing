@@ -48,7 +48,7 @@ tasks {
   }
 
   jar {
-    archiveClassifier.set("fabric")
+    archiveClassifier.set("fabric-dev")
 
     from("/LICENSE")
 
@@ -74,6 +74,10 @@ tasks {
 
       "Sealed" to "true"
     )
+  }
+
+  remapJar {
+    archiveClassifier.set("fabric")
   }
 
   named<Jar>("sourcesJar") {
