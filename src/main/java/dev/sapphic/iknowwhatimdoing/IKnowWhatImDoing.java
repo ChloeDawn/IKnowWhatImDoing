@@ -21,7 +21,8 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.tutorial.TutorialSteps;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.ScreenOpenEvent;
+import net.minecraftforge.client.loading.ClientModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DistExecutor;
@@ -29,8 +30,7 @@ import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.ModWorkManager;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmlclient.ClientModLoader;
-import net.minecraftforge.fmllegacy.network.FMLNetworkConstants;
+import net.minecraftforge.network.NetworkConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -51,7 +51,7 @@ public final class IKnowWhatImDoing implements Serializable {
    */
   public IKnowWhatImDoing() {
     ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> {
-      return new IExtensionPoint.DisplayTest(() -> FMLNetworkConstants.IGNORESERVERONLY, (s, v) -> true);
+      return new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (s, v) -> true);
     });
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
@@ -59,10 +59,10 @@ public final class IKnowWhatImDoing implements Serializable {
 
       @Override
       public void run() {
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, true, new Consumer<GuiOpenEvent>() {
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, true, new Consumer<ScreenOpenEvent>() {
           @Override
-          public void accept(final GuiOpenEvent event) {
-            if (event.getGui() instanceof TitleScreen) {
+          public void accept(final ScreenOpenEvent event) {
+            if (event.getScreen() instanceof TitleScreen) {
               Minecraft.getInstance().getTutorial().setStep(TutorialSteps.NONE);
               MinecraftForge.EVENT_BUS.unregister(this);
             }
