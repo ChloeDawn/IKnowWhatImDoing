@@ -20,7 +20,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.tutorial.TutorialSteps;
 
-public final class IKnowWhatImDoing implements ClientModInitializer {
+import java.io.Serializable;
+
+public final class IKnowWhatImDoing implements ClientModInitializer, Serializable {
+  private static final long serialVersionUID = -6194609073673544528L;
+
   @Override
   public void onInitializeClient() {
     Minecraft.getInstance().execute(() -> {
