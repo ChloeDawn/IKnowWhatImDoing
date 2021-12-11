@@ -48,6 +48,8 @@ tasks {
   }
 
   jar {
+    archiveClassifier.set("fabric")
+
     from("/LICENSE")
 
     manifest.attributes(
@@ -72,6 +74,10 @@ tasks {
 
       "Sealed" to "true"
     )
+  }
+
+  named<Jar>("sourcesJar") {
+    archiveClassifier.set("fabric-${archiveClassifier.get()}")
   }
 
   assemble {
