@@ -27,4 +27,9 @@ public final class IKnowWhatImDoing implements ClientModInitializer {
       Minecraft.getInstance().getTutorial().setStep(TutorialSteps.NONE);
     });
   }
+
+  @Override
+  public String toString() {
+    return "IKnowWhatImDoing";
+  }
 }
