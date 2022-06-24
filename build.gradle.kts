@@ -1,16 +1,24 @@
 import java.time.Instant
 
 plugins {
-  id("fabric-loom") version "0.10.64"
-  id("net.nemerosa.versioning") version "2.15.1"
-  id("signing")
+  id(/*net.fabricmc.*/ "fabric-loom") version "0.12.51"
+  id("net.nemerosa.versioning") version "3.0.0"
+  id("org.gradle.signing")
 }
 
 group = "dev.sapphic"
-version = "4.0.0"
+version = "4.1.0"
 
 java {
   withSourcesJar()
+}
+
+loom {
+  runs {
+    configureEach {
+      vmArgs("-Xmx4G", "-XX:+UseZGC")
+    }
+  }
 }
 
 repositories {
@@ -22,22 +30,36 @@ repositories {
 }
 
 dependencies {
-  minecraft("com.mojang:minecraft:1.18.1")
-  mappings(loom.officialMojangMappings())
-  modImplementation("net.fabricmc:fabric-loader:0.12.9")
+  minecraft("com.mojang:minecraft:1.19")
+  mappings(loom.layered {
+    officialMojangMappings {
+      nameSyntheticMembers = true
+    }
+  })
+
+  modImplementation("net.fabricmc:fabric-loader:0.14.8")
+
   implementation("org.jetbrains:annotations:23.0.0")
-  implementation("org.checkerframework:checker-qual:3.20.0")
-  modRuntimeOnly("com.terraformersmc:modmenu:3.0.0")
+  implementation("org.checkerframework:checker-qual:3.22.1")
+
+  modRuntimeOnly("com.terraformersmc:modmenu:4.0.0")
 }
 
 tasks {
   compileJava {
     with(options) {
-      release.set(8)
-      isFork = true
       isDeprecation = true
       encoding = "UTF-8"
-      compilerArgs.addAll(listOf("-Xlint:all", "-parameters"))
+      isFork = true
+      compilerArgs.addAll(
+        listOf(
+          "-Xlint:all", "-Xlint:-processing",
+          // Enable parameter name class metadata 
+          // https://openjdk.java.net/jeps/118
+          "-parameters"
+        )
+      )
+      release.set(8)
     }
   }
 
@@ -78,8 +100,8 @@ tasks {
     archiveClassifier.set("fabric")
   }
 
-  named<Jar>("sourcesJar") {
-    archiveClassifier.set("fabric-${archiveClassifier.get()}")
+  remapSourcesJar {
+    archiveClassifier.set("fabric-sources")
   }
 
   if (hasProperty("signing.mods.keyalias")) {
@@ -87,35 +109,40 @@ tasks {
     val keystore = property("signing.mods.keystore")
     val password = property("signing.mods.password")
 
-    listOf(remapJar, remapSourcesJar).forEach {
-      it.get().doLast {
-        if (!project.file(keystore!!).exists()) {
-          error("Missing keystore $keystore")
-        }
-
-        val file = outputs.files.singleFile
-        ant.invokeMethod(
-          "signjar", mapOf(
-            "jar" to file,
-            "alias" to alias,
-            "storepass" to password,
-            "keystore" to keystore,
-            "verbose" to true,
-            "preservelastmodified" to true
-          )
-        )
-        signing.sign(file)
-      }
+    fun Sign.antSignJar(task: Task) = task.outputs.files.forEach { file ->
+      ant.invokeMethod(
+        "signjar", mapOf(
+          "jar" to file,
+          "alias" to alias,
+          "storepass" to password,
+          "keystore" to keystore,
+          "verbose" to true,
+          "preservelastmodified" to true
+        ))
     }
-  }
 
-  assemble {
-    dependsOn(versionFile, remapJar, remapSourcesJar)
+    val signJar by creating(Sign::class) {
+      dependsOn(remapJar)
 
-    doFirst {
-      delete(buildDir.resolve("libs").listFiles { _, name ->
-        name.endsWith("-dev.jar")
-      })
+      doFirst {
+        antSignJar(remapJar.get())
+      }
+
+      sign(remapJar.get())
+    }
+
+    val signSourcesJar by creating(Sign::class) {
+      dependsOn(remapSourcesJar)
+
+      doFirst {
+        antSignJar(remapSourcesJar.get())
+      }
+
+      sign(remapSourcesJar.get())
+    }
+
+    assemble {
+      dependsOn(signJar, signSourcesJar)
     }
   }
 }

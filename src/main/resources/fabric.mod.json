@@ -3,7 +3,7 @@
   "id": "iknowwhatimdoing",
   "name": "I Know What I'm Doing",
   "version": "$version",
-  "description": "Suppresses tutorial cards in fresh game instances",
+  "description": "Suppresses tutorial cards in fresh game instances.",
   "environment": "client",
   "license": "Apache-2.0",
   "depends": {
@@ -19,8 +19,8 @@
     "Chloe Dawn"
   ],
   "contact": {
-    "homepage": "https://bit.ly/3ovZPLX",
-    "sources": "https://git.io/JeuS1",
-    "issues": "https://git.io/JeuSM"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/i-know-what-im-doing",
+    "sources": "https://github.com/ChloeDawn/IKnowWhatImDoing",
+    "issues": "https://github.com/ChloeDawn/IKnowWhatImDoing/issues"
   }
 }
