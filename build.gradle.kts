@@ -2,20 +2,20 @@ import java.time.Instant
 import net.minecraftforge.gradle.common.tasks.SignJar
 
 plugins {
-  id("net.minecraftforge.gradle") version "5.1.26"
-  id("net.nemerosa.versioning") version "2.15.1"
-  id("signing")
+  id("net.minecraftforge.gradle") version "5.1.48"
+  id("net.nemerosa.versioning") version "3.0.0"
+  id("org.gradle.signing")
 }
 
 group = "dev.sapphic"
-version = "5.0.0"
+version = "5.1.0"
 
 java {
   withSourcesJar()
 }
 
 minecraft {
-  mappings("official", "1.18.1")
+  mappings("official", "1.19")
   runs {
     listOf("client", "server").forEach {
       create(it) {
@@ -28,18 +28,25 @@ minecraft {
 }
 
 dependencies {
-  minecraft("net.minecraftforge:forge:1.18.1-39.0.0")
-  implementation("org.checkerframework:checker-qual:3.20.0")
+  minecraft("net.minecraftforge:forge:1.19-41.0.45")
+  implementation("org.checkerframework:checker-qual:3.22.1")
 }
 
 tasks {
   compileJava {
     with(options) {
-      release.set(17)
-      isFork = true
       isDeprecation = true
       encoding = "UTF-8"
-      compilerArgs.addAll(listOf("-Xlint:all", "-parameters"))
+      isFork = true
+      compilerArgs.addAll(
+        listOf(
+          "-Xlint:all", "-Xlint:-processing",
+          // Enable parameter name class metadata 
+          // https://openjdk.java.net/jeps/118
+          "-parameters"
+        )
+      )
+      release.set(17)
     }
   }
 

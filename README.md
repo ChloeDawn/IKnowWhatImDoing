@@ -1,2 +1,2 @@
 # IKnowWhatImDoing
-A mod for Minecraft that suppresses in-game tutorial hints
+A mod for Minecraft that suppresses in-game tutorial hints.
