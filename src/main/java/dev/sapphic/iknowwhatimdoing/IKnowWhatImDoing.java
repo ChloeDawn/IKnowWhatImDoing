@@ -21,7 +21,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.tutorial.TutorialSteps;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ScreenOpenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.loading.ClientModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -59,9 +59,9 @@ public final class IKnowWhatImDoing implements Serializable {
 
       @Override
       public void run() {
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, true, new Consumer<ScreenOpenEvent>() {
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, true, new Consumer<ScreenEvent.Init.Pre>() {
           @Override
-          public void accept(final ScreenOpenEvent event) {
+          public void accept(final ScreenEvent.Init.Pre event) {
             if (event.getScreen() instanceof TitleScreen) {
               Minecraft.getInstance().getTutorial().setStep(TutorialSteps.NONE);
               MinecraftForge.EVENT_BUS.unregister(this);

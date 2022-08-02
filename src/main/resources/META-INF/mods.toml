@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[41,)"
+loaderVersion = "[41.1,)"
 license = "Apache-2.0"
 
 [[mods]]
@@ -18,5 +18,5 @@ side = "CLIENT"
 [[dependencies.iknowwhatimdoing]]
 modId = "forge"
 mandatory = true
-versionRange = "[41,)"
+versionRange = "[41.1,)"
 side = "CLIENT"

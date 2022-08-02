@@ -2,13 +2,13 @@ import java.time.Instant
 import net.minecraftforge.gradle.common.tasks.SignJar
 
 plugins {
-  id("net.minecraftforge.gradle") version "5.1.48"
+  id("net.minecraftforge.gradle") version "5.1.53"
   id("net.nemerosa.versioning") version "3.0.0"
   id("org.gradle.signing")
 }
 
 group = "dev.sapphic"
-version = "5.1.0"
+version = "5.1.1"
 
 java {
   withSourcesJar()
@@ -28,8 +28,8 @@ minecraft {
 }
 
 dependencies {
-  minecraft("net.minecraftforge:forge:1.19-41.0.45")
-  implementation("org.checkerframework:checker-qual:3.22.1")
+  minecraft("net.minecraftforge:forge:1.19-41.1.0")
+  implementation("org.checkerframework:checker-qual:3.23.0")
 }
 
 tasks {
