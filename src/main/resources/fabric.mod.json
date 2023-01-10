@@ -3,11 +3,11 @@
   "id": "iknowwhatimdoing",
   "name": "I Know What I'm Doing",
   "version": "$version",
-  "description": "Suppresses tutorial cards in fresh game instances.",
+  "description": "Suppresses in-game tutorial hints.",
   "environment": "client",
   "license": "Apache-2.0",
   "depends": {
-    "fabricloader": ">=0.12.9",
+    "fabricloader": ">=0.14.12",
     "minecraft": ">=1.12"
   },
   "entrypoints": {

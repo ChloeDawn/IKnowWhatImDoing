@@ -1,13 +1,13 @@
 import java.time.Instant
 
 plugins {
-  id(/*net.fabricmc.*/ "fabric-loom") version "0.12.51"
+  id(/*net.fabricmc.*/ "fabric-loom") version "1.0.17"
   id("net.nemerosa.versioning") version "3.0.0"
   id("org.gradle.signing")
 }
 
 group = "dev.sapphic"
-version = "4.1.0"
+version = "4.1.1"
 
 java {
   withSourcesJar()
@@ -30,19 +30,19 @@ repositories {
 }
 
 dependencies {
-  minecraft("com.mojang:minecraft:1.19")
+  minecraft("com.mojang:minecraft:1.19.3")
   mappings(loom.layered {
     officialMojangMappings {
       nameSyntheticMembers = true
     }
   })
 
-  modImplementation("net.fabricmc:fabric-loader:0.14.8")
+  modImplementation("net.fabricmc:fabric-loader:0.14.12")
 
-  implementation("org.jetbrains:annotations:23.0.0")
-  implementation("org.checkerframework:checker-qual:3.22.1")
+  implementation("org.jetbrains:annotations:23.1.0")
+  implementation("org.checkerframework:checker-qual:3.29.0")
 
-  modRuntimeOnly("com.terraformersmc:modmenu:4.0.0")
+  modRuntimeOnly("com.terraformersmc:modmenu:5.0.2")
 }
 
 tasks {
