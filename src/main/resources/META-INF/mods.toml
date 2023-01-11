@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44.1,)"
+loaderVersion = "[44,)"
 license = "Apache-2.0"
 
 [[mods]]
